@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sqldoc</artifactId>
+        <groupId>com.sqldoc.soft</groupId>
+        <version>${sqldoc.version}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sqldoc-controller</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sqldoc.soft</groupId>
+            <artifactId>sqldoc-service</artifactId>
+            <version>${sqldoc.version}</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${session.sysName}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <!-- bootstrap 启用响应 -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"></meta>
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.min.css"></link>
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/plugins/ionicons-2.0.1/css/ionicons.min.css"></link>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/AdminLTE.min.css"></link>
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/plugins/iCheck/square/blue.css"></link>
+    <link rel="stylesheet" href="/css/style.css"></link>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="loginContainer">
+        <form action="/login" method="post">
+            <div class="form-horizontal">
+                <div class="col-xs-1 col-sm-4 col-md-5"></div>
+                <div class="col-xs-10 col-sm-4 col-md-2">
+                    <div class="form-group text-center">
+                        <h3>
+                            <label th:text="${session.sysName}"></label>
+                        </h3>
+                    </div>
+                    <p th:if="${param.error}" class="alert alert-danger">用户名密码不匹配，请重新输入！</p>
+                    <p th:if="${param.logout}" class="alert label-success">注销成功!</p>
+                    <div class="form-group has-feedback">
+                        <input autocomplete="off" placeholder="请输入手机号/邮箱" class="form-control" id="login-username"
+                               name="username" type="text"/>
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input autocomplete="off" placeholder="请输入密码" class="form-control" id="login-passwd"
+                               name="password" type="password"/>
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <a href="javaScript:void(0);" id="forget-passwd">忘记密码</a>
+                        <div class="pull-right">
+                            <label for="keep-login">&nbsp;记住我</label>
+                        </div>
+                        <div class="pull-right">
+                            <input id="keep-login" checked="checked" type="checkbox"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+                        <button class="form-control btn btn-primary" type="submit">登录</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script src="/plugins/require/require.js"></script>
+<script src="/plugins/requireMain.js"></script>
+<script>
+    require(['jquery', 'iCheck'], function ($, iCheck) {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
+</html>

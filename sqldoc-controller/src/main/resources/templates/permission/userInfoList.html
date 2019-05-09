@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>用户管理</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+            <li class="active">用户管理</li>
+        </ol>
+    </section>
+    <section>
+        <div class="content">
+            <div class="box">
+                <div class="box-header">用户列表</div>
+                <div class="box-body table-responsive no-padding">
+                    <form id="userInfo_search_form" class="form-horizontal">
+                        <div class="form-group no-margin">
+                            <label class="col-sm-1 control-label">用户名</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="userAccount" placeholder="用户名"
+                                       maxlength="50"/>
+                            </div>
+                            <button type="button" onclick="userInfoSearch()"
+                                    class="btn btn-primary col-md-1  col-md-offset-5">搜索
+                            </button>
+                            <button type="button" onclick="$('#modal').modal();" class="btn btn-primary col-md-1"
+                                    style="margin-left: 1px;">添加
+                            </button>
+                        </div>
+                    </form>
+                    <table id="userInfo_dataTable" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>账号</th>
+                            <th>用户名</th>
+                            <th>用户电话</th>
+                            <th>性别</th>
+                            <th>生日</th>
+                            <th>用户类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div th:include="fragments/modal"></div>
+        <div th:include="permission/addUserInfo"></div>
+    </section>
+    <script type="text/javascript">
+        $(function () {
+            drawTable();// 加载列表
+            openModal(); //装载modal
+            submit();//添加的提交方法
+        });
+        /**
+         * 搜索
+         */
+        function userInfoSearch() {
+            drawTable($("#userInfo_search_form").serializeObject());
+        }
+        function drawTable(queryData) {
+            var userInfoDataTable = $('#userInfo_dataTable').DataTable({
+                "serverSide": true,
+                "paging": true,
+                "destroy": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false,
+                "language": tableslanguage,
+                "ajax": {
+                    "url": "/permission/userInfoList",
+                    "type": "post",
+                    "data": queryData,
+                    "timeout": "15000",
+                    "error": handleAjaxError
+                },
+                "columns": [{
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                }, {
+                    "data": "userAccount"
+                }, {
+                    "data": "userName"
+                }, {
+                    "data": "telephone"
+                }, {
+                    "data": "sexEnum"
+                }, {
+                    "data": "birthday"
+                }, {
+                    "data": "userTypeEnum"
+                }, {
+                    "data": function (data, type, row) {
+                        return '<a href="javaScript:void(0);">禁用</a>'
+                    }
+                }]
+            });
+        }
+        /**
+         * 加载模态窗口
+         */
+        function openModal() {
+            $('#modal').on('show.bs.modal', function (event) {
+                var modal = $(this);
+                modal.find('.modal-title').text('添加数据');
+                modal.find('.modal-body').append($("form[id='userForm']"));
+            });
+            // 初始化日期控件
+            $('#datepicker').datepicker({
+                format: 'yyyy-mm-dd',       //格式化日期显示
+                endDate: '0d'      //可选日期截止到当前时间
+            });
+        }
+        /**
+         * 验证数据并提交
+         */
+        function submit() {
+            //确定
+            $("#modal_ok").on("click", function () {
+                //验证表单
+                //获取表单的数据
+                console.info($("#userForm").serializeJson());
+                //提交表单
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

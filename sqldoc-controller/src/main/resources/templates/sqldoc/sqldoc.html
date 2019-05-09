@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+    <title>数据库文档</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+            <li class="active">数据库文档</li>
+        </ol>
+    </section>
+    <section class="content">
+        <!-- 选择数据库 -->
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-1 control-label">选择数据库:</label>
+                <div class="col-sm-2">
+                    <select id="sqldoc_select" class="form-control" placeholder="请选择数据库" th:value="${dataBaseName}"
+                            onchange="selectDataBase()">
+                        <option th:each="dataBaseNames :${dataBaseNameList}" th:text="${dataBaseNames.dataBaseName}"
+                                th:attr="value=${dataBaseNames.dataBaseName},selected=${dataBaseNames.dataBaseName} eq ${dataBaseName}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!--  数据表结构  -->
+        <div class="container-fluid">
+            <div id="sqldoc_dataTable" class="row"></div>
+        </div>
+    </section>
+    <script>
+        $(function () {
+            createTableInfo($("#sqldoc_select").val());
+        });
+
+        function selectDataBase() {
+            createTableInfo($("#sqldoc_select").val());
+        }
+
+        function createTableInfo(dataBaseName) {
+            utils.post("/sqldoc/sqldocTable", {dataBaseName: dataBaseName}, function (data) {
+                $("#sqldoc_dataTable").html("");
+                if (utils.isNotNull(data)) {
+                    for (var i in data) {
+                        var tableInfo = data[i];
+                        var html = $("<div class='col-md-6'><div class='box'><div class='box-header with-border'></div><div class='box-body'></div></div></div>");
+                        $(html).find(".box-header").html("<h3 class='box-title'>" + tableInfo.tableName + "(" + tableInfo.tableComment + ")" + "</h3><div class='box-tools pull-right'><button type='button' class='btn btn-box-tool' data-widget='collapse'data-toggle='tooltip' title='' data-original-title='Collapse'><i class='fa fa-minus'></i></button></div>");
+                        $(html).find(".box-body").html("<table class='table table-striped table-bordered W100' ><thead><tr><th style='width:30%'>列名</th><th style='width:20%'>数据类型</th><th style='width:10%'>是否为空</th><th>描述</th></tr></thead><tbody id='"+tableInfo.tableName+"'></tbody></table>");
+                        $("#sqldoc_dataTable").append(html);
+                        (function(html){
+                            utils.post("/sqldoc/sqldocColumn", {
+                                dataBaseName: dataBaseName,
+                                tableName: tableInfo.tableName
+                            }, function (data) {
+                                if (utils.isNotNull(data)) {
+                                    for (var j in data) {
+                                        var columnInfo = data[j];
+                                        var remarks = "<label class='label label-danger'>不规范</label>";
+                                        if (utils.isNotNull(columnInfo.columnComment)) {
+                                            remarks = columnInfo.columnComment;
+                                        } else {
+                                            if ("id" == columnInfo.columnName || "ID" == columnInfo.columnName) {
+                                                remarks = "<span>主键</span>";
+                                            }
+                                        }
+                                        $(html).find("tbody").append("<tr><td>" + columnInfo.columnName + "</td><td>" + columnInfo.columnType + "</td><td>" + columnInfo.ifNullable + "</td><td>" + remarks + "</td></tr>");
+                                    }
+                                }
+                            });
+                        })(html)
+                    }
+                } else {
+                    $("#sqldoc_dataTable").html("<div class='col-md-12'>未找到对应的数据表</div>");
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

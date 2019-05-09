@@ -1,0 +1,57 @@
+<!--添加弹框-->
+<div style="display: none">
+    <form class="form-horizontal" id="userForm">
+        <div class="box-body">
+            <div class="form-group">
+                <label for="userAccount" class="col-sm-2 control-label">账号</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="userAccount" name="userAccount" placeholder="账号名称" type="text"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="userName" class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="userName" name="userName" placeholder="用户名" type="text"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pwd" class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="pwd" name="userPassword" placeholder="密码" type="password"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sex" class="col-sm-2 control-label">性别</label>
+                <div class="col-sm-10">
+                    <div class="radio">
+                        <label><input name="sexEnum" id="sex"  value="0" checked="checked" type="radio"/>男</label>
+                        <label for="sex2"><input name="sexEnum" id="sex2" value="1"  type="radio" style="margin-left: -17px;"/>女</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sex" class="col-sm-2 control-label">生日</label>
+                <div class="col-sm-10">
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input class="form-control pull-right" name="birthday" id="datepicker" type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="sex" class="col-sm-2 control-label">用户类型</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="userTypeEnum">
+                        <option>option 1</option>
+                        <option>option 2</option>
+                        <option>option 3</option>
+                        <option>option 4</option>
+                        <option>option 5</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

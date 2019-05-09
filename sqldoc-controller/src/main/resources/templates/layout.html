@@ -1,0 +1,24 @@
+<!DOCTYPE html >
+<html>
+<head>
+<!--  Each token will be replaced by their respective titles in the resulting page. -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title th:text="${session.sysName}"  layout:title-pattern="$CONTENT_TITLE-$DECORATOR_TITLE"></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<!-- bootstrap 启用响应 -->
+<!-- Tell the browser to be responsive to screen width -->
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+<link th:replace="fragments/style" />
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div th:replace="fragments/js"></div>
+	<div class="wrapper">
+		<div th:replace="fragments/header"></div>
+		<div th:replace="fragments/left_nav"></div>
+		<div class="content-wrapper">
+			<div layout:fragment="content"></div>
+		</div>
+		<div th:replace="fragments/footer"></div>
+	</div>
+</body>
+</html>
